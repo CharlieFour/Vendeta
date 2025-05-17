@@ -11,5 +11,6 @@ config_version=5
 [application]
 
 config/name="Vendeta"
+run/main_scene="uid://1euxf7xpnge6"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"

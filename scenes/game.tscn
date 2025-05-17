@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://1euxf7xpnge6"]
+
+[ext_resource type="PackedScene" uid="uid://dpn2om1h30l45" path="res://scenes/fighter.tscn" id="1_uwrxv"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yqjtg"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Fighter" parent="." instance=ExtResource("1_uwrxv")]
+
+[node name="Camera2D" type="Camera2D" parent="Fighter"]
+position = Vector2(-1, -35)
+zoom = Vector2(2, 2)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_yqjtg")

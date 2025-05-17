@@ -1,4 +1,7 @@
+Timer
 CollisionShape2D
+Area2D
+TileMap
 StaticBody2D
 Camera2D
 AnimatedSprite2D

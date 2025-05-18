@@ -1,3 +1,6 @@
+Button
+VBoxContainer
+CenterContainer
 Timer
 CollisionShape2D
 Area2D

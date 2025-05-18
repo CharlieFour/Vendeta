@@ -1,8 +1,11 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1747476686
+::res://::1747563218
 icon.svg::CompressedTexture2D/CompressedTexture2D::3653842731423981772::1747117547::1747117559::1::::<><><>0<>0<>8f39b7b6910487cb22612bd12501fb9b<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile/TextFile::-1::1747117464::0::1::::<><><>0<>0<><>::
-::res://assets/::1747160367
+::res://assets/::1747562015
+::res://assets/bg/::1747565376
+HD-1080p-Space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies.jpg::CompressedTexture2D::8246999926418661608::1747565333::1747565380::1::::<><><>0<>0<>9d4641772f7aa103acea0b6b49800cf7<>res://.godot/imported/HD-1080p-Space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies.jpg-dd4ebfa401470d7a1db708fc807aeef5.ctex::
+wallpaperflare.com_wallpaper (3).jpg::CompressedTexture2D::8782753567549402295::1666617669::1747561411::1::::<><><>0<>0<>f44785ecdc579a202fe4e68f0cb0f2f4<>res://.godot/imported/wallpaperflare.com_wallpaper (3).jpg-833aa7c8cf25570ee3816d60d95849d9.ctex::
 ::res://assets/city_tileset/::1747160346
 ::res://assets/city_tileset/1 Tiles/::1747475683
 Tileset.png::CompressedTexture2D/CompressedTexture2D::1000329229891019105::1747160345::1747475683::1::::<><><>0<>0<>7e3c1cde9506526bf92bcf9c47353432<>res://.godot/imported/Tileset.png-c834ee03d1219d902e64cbf9bd175845.ctex::
@@ -165,6 +168,8 @@ Pointer3.png::CompressedTexture2D/CompressedTexture2D::5016727642143688163::1747
 Card.png::CompressedTexture2D/CompressedTexture2D::6736947148089202241::1747160346::1747475683::1::::<><><>0<>0<>820f5dd264d52799207b122cb3491d44<>res://.godot/imported/Card.png-9a8ef32f645bc5d4c038147165fa6493.ctex::
 Chest.png::CompressedTexture2D/CompressedTexture2D::1436844420299305177::1747160346::1747475683::1::::<><><>0<>0<>256c968d5cd3abe82edb57f4bec70b9f<>res://.godot/imported/Chest.png-f6579e8a3f513abcc734656e3a32cd9d.ctex::
 Money.png::CompressedTexture2D/CompressedTexture2D::5991833567528876039::1747160346::1747475683::1::::<><><>0<>0<>1d225825aa995bddabbd627c90724387<>res://.godot/imported/Money.png-2e169a2f5fcf292e230677f54079314a.ctex::
+::res://assets/font/::1747562019
+vendetta.ttf::FontFile::6501014954975612915::1742125671::1747562019::1::::<><><>0<>0<>628645bdac2ea5c6bb744ace695057f9<>res://.godot/imported/vendetta.ttf-ccbcc538935f2f9db34610761fd6c109.fontdata::
 ::res://assets/pets/::1747160367
 ::res://assets/pets/mew/::1747475683
 Attack1.png::CompressedTexture2D/CompressedTexture2D::8345834936620357801::1745137706::1747475683::1::::<><><>0<>0<>d1d6cf255b48ee991fb769b6a2c7b617<>res://.godot/imported/Attack1.png-a29993a3960d68a89fa99ec1e8a97d9b.ctex::
@@ -242,7 +247,12 @@ Jump.png::CompressedTexture2D/CompressedTexture2D::262827188538742191::174513710
 Run.png::CompressedTexture2D/CompressedTexture2D::4374260893803061758::1745137107::1747475683::1::::<><><>0<>0<>35de46bf7c24b207e86c5eb8c76f9873<>res://.godot/imported/Run.png-56d5c7d20010d4a91731af8baf06ed3d.ctex::
 Shield.png::CompressedTexture2D/CompressedTexture2D::2850077729774397429::1745137107::1747475683::1::::<><><>0<>0<>f49df5b7bef3e6dae04ad72861dcfbf6<>res://.godot/imported/Shield.png-b0875caa3416f981c2e983baac7a3971.ctex::
 Walk.png::CompressedTexture2D/CompressedTexture2D::3630762742319778028::1745137107::1747475683::1::::<><><>0<>0<>f2c34736727bf2dd5434232a555a0f72<>res://.godot/imported/Walk.png-d26c07f8148b5067d10f0b28fb2492b6.ctex::
-::res://scenes/::1747476604
-fighter.tscn::PackedScene::8240596647173507340::1747476449::0::1::::<><><>0<>0<><>::uid://ba8tvj5xw4d83::::res://assets/players/Fighter/Idle.png
-game.tscn::PackedScene::1834423171836292855::1747475917::0::1::::<><><>0<>0<><>::
-::res://script/::1747118716
+::res://scenes/::1747565253
+fighter.tscn::PackedScene::8240596647173507340::1747565253::0::1::::<><><>0<>0<><>::uid://blp5r7yvx2m28::::res://script/fighter.gd<>uid://ba8tvj5xw4d83::::res://assets/players/Fighter/Idle.png
+game.tscn::PackedScene::1834423171836292855::1747565253::0::1::::<><><>0<>0<><>::uid://dpn2om1h30l45::::res://scenes/fighter.tscn<>uid://oitjnmmx56af::::res://assets/city_tileset/1 Tiles/Tileset.png<>uid://0t4f38uxtp6x::::res://assets/city_tileset/3 Objects/Stones/2.png<>uid://yxm2t8l2q7et::::res://assets/city_tileset/3 Objects/Trees/6.png<>uid://csbwikaenflcb::::res://assets/city_tileset/3 Objects/Stones/3.png<>uid://px31k65toh53::::res://assets/city_tileset/3 Objects/Stones/4.png<>uid://5v4spdonfwvs::::res://assets/city_tileset/3 Objects/Trees/7.png<>uid://bksct3waft04w::::res://assets/city_tileset/3 Objects/Trees/18.png<>uid://cahvxs8vvij6q::::res://assets/city_tileset/3 Objects/Trees/8.png<>uid://d2beluxdghnh::::res://assets/city_tileset/3 Objects/Trees/12.png<>uid://bh66iwel73pm0::::res://assets/city_tileset/3 Objects/Trees/10.png<>uid://ddh2lk6m8mpd2::::res://assets/city_tileset/2 Background/Night/2.png<>uid://mq42ynxiiqbj::::res://assets/city_tileset/3 Objects/Trees/2.png<>uid://ct5r1f0cyn5gw::::res://assets/city_tileset/3 Objects/Trees/1.png<>uid://cmgxh50agojcp::::res://assets/city_tileset/3 Objects/Trees/4.png<>uid://blaw5bdxlt6b1::::res://assets/city_tileset/3 Objects/Trees/5.png<>uid://dpj8lwh8rjsgw::::res://scenes/killzone.tscn
+killzone.tscn::PackedScene::8232698577780369634::1747565253::0::1::::<><><>0<>0<><>::uid://m6futcmed77x::::res://script/killzone.gd
+menu.tscn::PackedScene::1414616434056822605::1747565253::0::1::::<><><>0<>0<><>::uid://car7l43uurqui::::res://script/menu.gd<>uid://dxeowyki63qqh::::res://assets/bg/wallpaperflare.com_wallpaper (3).jpg<>uid://cyve1ccpigpx0::::res://assets/font/vendetta.ttf
+::res://script/::1747563201
+fighter.gd::GDScript/GDScript::3191317217110197327::1747483169::0::1::::<>CharacterBody2D<><>0<>0<><>::
+killzone.gd::GDScript::906602136458159919::1747497269::0::1::::<>Area2D<><>0<>0<><>::
+menu.gd::GDScript::4809899944074499384::1747563201::0::1::::<>Control<><>0<>0<><>::

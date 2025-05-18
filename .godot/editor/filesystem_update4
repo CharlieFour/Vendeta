@@ -1,5 +1,3 @@
-res://scenes/game.tscn
 res://scenes/fighter.tscn
-res://script/fighter.gd
-res://killzone.gd
-res://scenes/killzone.tscn
+res://scenes/Samurai.tscn
+res://scenes/Shinobi.tscn

@@ -445,13 +445,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rrf2w"]
 size = Vector2(34, 79)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="Samurai" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -65)
 sprite_frames = SubResource("SpriteFrames_geait")
 animation = &"walk"
-frame_progress = 0.693775
+frame_progress = 0.302026
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, -40.5)

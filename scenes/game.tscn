@@ -1,8 +1,7 @@
-[gd_scene load_steps=38 format=3 uid="uid://1euxf7xpnge6"]
+[gd_scene load_steps=40 format=3 uid="uid://1euxf7xpnge6"]
 
 [ext_resource type="Script" uid="uid://73yl2ihnia5u" path="res://scenes/game_manager.gd" id="1_264po"]
 [ext_resource type="Texture2D" uid="uid://dpq55b1je6yfg" path="res://assets/bg/HD-1080p-Space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies.jpg" id="1_ssvqc"]
-[ext_resource type="PackedScene" uid="uid://dpn2om1h30l45" path="res://scenes/fighter.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://oitjnmmx56af" path="res://assets/city_tileset/1 Tiles/Tileset.png" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://0t4f38uxtp6x" path="res://assets/city_tileset/3 Objects/Stones/2.png" id="3_p57ef"]
 [ext_resource type="Texture2D" uid="uid://yxm2t8l2q7et" path="res://assets/city_tileset/3 Objects/Trees/6.png" id="4_ca42v"]
@@ -19,7 +18,6 @@
 [ext_resource type="Texture2D" uid="uid://cmgxh50agojcp" path="res://assets/city_tileset/3 Objects/Trees/4.png" id="15_e1j6l"]
 [ext_resource type="Texture2D" uid="uid://blaw5bdxlt6b1" path="res://assets/city_tileset/3 Objects/Trees/5.png" id="16_pl11u"]
 [ext_resource type="PackedScene" uid="uid://dpj8lwh8rjsgw" path="res://scenes/killzone.tscn" id="17_rysoc"]
-[ext_resource type="PackedScene" uid="uid://dcb50wknc5sp5" path="res://scenes/Samurai.tscn" id="20_1kice"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_yqjtg")
@@ -571,46 +569,43 @@ sources/15 = SubResource("TileSetAtlasSource_qouja")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ssvqc"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1kice"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5newe"]
+bg_color = Color(0.933355, 0, 0.0130625, 0.996078)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37s47"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bt5mj"]
+bg_color = Color(0.933333, 0, 0.0117647, 0.996078)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="Game" type="Node2D"]
-
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Player1Bar" type="HBoxContainer" parent="UI"]
-offset_left = -575.0
-offset_top = -320.0
-offset_right = -291.0
-offset_bottom = -272.0
-
-[node name="Player1Label" type="Label" parent="UI/Player1Bar"]
-layout_mode = 2
-
-[node name="Player1HealthBar" type="TextureProgressBar" parent="UI/Player1Bar"]
-layout_mode = 2
-value = 100.0
-
-[node name="Player2Bar" type="HBoxContainer" parent="UI"]
-offset_left = 298.0
-offset_top = -317.0
-offset_right = 566.0
-offset_bottom = -267.0
-
-[node name="Player2Label" type="Label" parent="UI/Player2Bar"]
-layout_mode = 2
-
-[node name="Player2HealthBar" type="TextureProgressBar" parent="UI/Player2Bar"]
-layout_mode = 2
-value = 100.0
 
 [node name="Game Manager" type="Node" parent="."]
 script = ExtResource("1_264po")
 
 [node name="Hd-1080p-space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies" type="Sprite2D" parent="."]
-position = Vector2(-2, -119)
-scale = Vector2(1.12396, 0.92037)
+position = Vector2(-8.40425e-06, -0.500029)
+scale = Vector2(0.748958, 0.749074)
 texture = ExtResource("1_ssvqc")
-
-[node name="Fighter" parent="." instance=ExtResource("1_uwrxv")]
-unique_name_in_owner = true
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_lbhrr")
@@ -621,6 +616,7 @@ layer_1/tile_data = PackedInt32Array(65527, 65536, 0, 65528, 131072, 0, 65529, 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 scale = Vector2(2, 2)
+zoom = Vector2(0.8, 0.8)
 
 [node name="Killzone" parent="." instance=ExtResource("17_rysoc")]
 position = Vector2(3, 468)
@@ -628,5 +624,38 @@ position = Vector2(3, 468)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape2D_ssvqc")
 
-[node name="Samurai" parent="." instance=ExtResource("20_1kice")]
-position = Vector2(140, 1)
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Player1HealthBar" type="ProgressBar" parent="UI"]
+offset_left = -674.0
+offset_top = -353.0
+offset_right = -381.0
+offset_bottom = -326.0
+theme_override_styles/background = SubResource("StyleBoxFlat_1kice")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5newe")
+value = 100.0
+
+[node name="Player1Label" type="Label" parent="UI"]
+offset_left = -670.0
+offset_top = -320.0
+offset_right = -552.0
+offset_bottom = -297.0
+text = "Player 1"
+
+[node name="Player2HealthBar" type="ProgressBar" parent="UI"]
+offset_left = 374.0
+offset_top = -353.0
+offset_right = 667.0
+offset_bottom = -326.0
+theme_override_styles/background = SubResource("StyleBoxFlat_37s47")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bt5mj")
+value = 100.0
+fill_mode = 1
+
+[node name="Player2Label" type="Label" parent="UI"]
+offset_left = 533.0
+offset_top = -322.0
+offset_right = 661.0
+offset_bottom = -299.0
+text = "Player 2"
+horizontal_alignment = 2

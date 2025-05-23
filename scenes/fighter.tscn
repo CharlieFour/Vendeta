@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://dpn2om1h30l45"]
+[gd_scene load_steps=67 format=3 uid="uid://dpn2om1h30l45"]
 
 [ext_resource type="Script" uid="uid://blp5r7yvx2m28" path="res://script/fighter.gd" id="1_1q4ya"]
 [ext_resource type="Texture2D" uid="uid://ba8tvj5xw4d83" path="res://assets/players/Fighter/Idle.png" id="1_a4q2m"]
@@ -428,6 +428,14 @@ size = Vector2(31, 80)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o4lsg"]
 size = Vector2(6, 47)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_o4lsg"]
+properties/0/path = NodePath(".:collision_layer")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="Fighter" type="CharacterBody2D"]
 z_index = 5
 script = ExtResource("1_1q4ya")
@@ -447,6 +455,9 @@ shape = SubResource("RectangleShape2D_3wvek")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 position = Vector2(17, -57)
 shape = SubResource("RectangleShape2D_o4lsg")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_o4lsg")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

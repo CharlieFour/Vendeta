@@ -4,7 +4,9 @@ extends Node
 
 func _ready():
 	# For all peers (host and client)
-	multiplayer.peer_connected.connect(spawn_player)
+	if not multiplayer.peer_connected.is_connected(spawn_player):
+		multiplayer.peer_connected.connect(spawn_player)
+
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 	# Spawn for self

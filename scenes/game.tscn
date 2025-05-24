@@ -1,6 +1,6 @@
 [gd_scene load_steps=40 format=3 uid="uid://1euxf7xpnge6"]
 
-[ext_resource type="Script" uid="uid://73yl2ihnia5u" path="res://scenes/game_manager.gd" id="1_264po"]
+[ext_resource type="Script" uid="uid://73yl2ihnia5u" path="res://script/game_manager.gd" id="1_264po"]
 [ext_resource type="Texture2D" uid="uid://dpq55b1je6yfg" path="res://assets/bg/HD-1080p-Space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies.jpg" id="1_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://oitjnmmx56af" path="res://assets/city_tileset/1 Tiles/Tileset.png" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://0t4f38uxtp6x" path="res://assets/city_tileset/3 Objects/Stones/2.png" id="3_p57ef"]
@@ -603,8 +603,8 @@ corner_radius_bottom_left = 10
 script = ExtResource("1_264po")
 
 [node name="Hd-1080p-space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies" type="Sprite2D" parent="."]
-position = Vector2(-8.40425e-06, -0.500029)
-scale = Vector2(0.748958, 0.749074)
+position = Vector2(-9.09495e-13, -1)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_ssvqc")
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -625,37 +625,42 @@ position = Vector2(3, 468)
 shape = SubResource("WorldBoundaryShape2D_ssvqc")
 
 [node name="UI" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 
 [node name="Player1HealthBar" type="ProgressBar" parent="UI"]
-offset_left = -674.0
-offset_top = -353.0
-offset_right = -381.0
-offset_bottom = -326.0
+z_index = 10
+anchors_preset = -1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 313.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_1kice")
 theme_override_styles/fill = SubResource("StyleBoxFlat_5newe")
 value = 100.0
 
 [node name="Player1Label" type="Label" parent="UI"]
-offset_left = -670.0
-offset_top = -320.0
-offset_right = -552.0
-offset_bottom = -297.0
+offset_left = 22.0
+offset_top = 54.0
+offset_right = 140.0
+offset_bottom = 77.0
 text = "Player 1"
 
 [node name="Player2HealthBar" type="ProgressBar" parent="UI"]
-offset_left = 374.0
-offset_top = -353.0
-offset_right = 667.0
-offset_bottom = -326.0
+offset_left = 843.0
+offset_top = 18.0
+offset_right = 1136.0
+offset_bottom = 45.0
 theme_override_styles/background = SubResource("StyleBoxFlat_37s47")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bt5mj")
 value = 100.0
 fill_mode = 1
 
 [node name="Player2Label" type="Label" parent="UI"]
-offset_left = 533.0
-offset_top = -322.0
-offset_right = 661.0
-offset_bottom = -299.0
+offset_left = 1003.0
+offset_top = 52.0
+offset_right = 1131.0
+offset_bottom = 75.0
 text = "Player 2"
 horizontal_alignment = 2

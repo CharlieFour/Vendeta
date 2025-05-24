@@ -1,6 +1,7 @@
+LineEdit
+OptionButton
 Label
 Button
-LineEdit
 VBoxContainer
 TextureRect
 Control
@@ -11,4 +12,3 @@ HBoxContainer
 CanvasLayer
 CollisionShape2D
 Area2D
-Node

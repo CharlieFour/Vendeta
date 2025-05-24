@@ -13,14 +13,14 @@ var selected_pet := ""
 func _ready():
 	# Fill character and pet dropdowns
 	character_dropdown.clear()
-	character_dropdown.add_item("Knight")
-	character_dropdown.add_item("Ninja")
+	character_dropdown.add_item("Fighter")
 	character_dropdown.add_item("Samurai")
+	character_dropdown.add_item("Shinobi")
 
 	pet_dropdown.clear()
-	pet_dropdown.add_item("Dragon")
-	pet_dropdown.add_item("Wolf")
-	pet_dropdown.add_item("Fairy")
+	pet_dropdown.add_item("Mew")
+	pet_dropdown.add_item("Squirtle")
+	pet_dropdown.add_item("Yeti")
 
 	# Set default or loaded values
 	name_edit.text = player_name

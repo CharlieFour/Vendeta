@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://dxo86rrrk2vjx"]
+
+[ext_resource type="Script" uid="uid://cwr8sr5rsy06" path="res://script/option_menu.gd" id="1_40sux"]
+[ext_resource type="FontFile" uid="uid://cyve1ccpigpx0" path="res://assets/font/vendetta.ttf" id="1_hecwe"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_hecwe"]
+
+[node name="Option_Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_40sux")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("CanvasTexture_hecwe")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 113.0
+offset_right = 758.0
+offset_bottom = 193.0
+theme_override_fonts/font = ExtResource("1_hecwe")
+theme_override_font_sizes/font_size = 80
+text = "OPTIONS"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 436.0
+offset_top = 231.0
+offset_right = 736.0
+offset_bottom = 475.0
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Change Name"
+horizontal_alignment = 1
+
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+text = "New Name"
+alignment = 1
+
+[node name="Character" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Choose Character"
+horizontal_alignment = 1
+
+[node name="CharacterDropdown" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Pet" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Choose Pet"
+horizontal_alignment = 1
+
+[node name="PetDropdown" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Back
+"

@@ -616,7 +616,6 @@ layer_1/tile_data = PackedInt32Array(65527, 65536, 0, 65528, 131072, 0, 65529, 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 scale = Vector2(2, 2)
-zoom = Vector2(0.8, 0.8)
 
 [node name="Killzone" parent="." instance=ExtResource("17_rysoc")]
 position = Vector2(3, 468)
@@ -629,7 +628,6 @@ unique_name_in_owner = true
 
 [node name="Player1HealthBar" type="ProgressBar" parent="UI"]
 z_index = 10
-anchors_preset = -1
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 313.0

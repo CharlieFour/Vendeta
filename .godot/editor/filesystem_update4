@@ -1,4 +1,4 @@
 res://scenes/game.tscn
 res://scenes/fighter.tscn
 res://scenes/menu.tscn
-res://script/fighter.gd
+res://scenes/killzone.tscn

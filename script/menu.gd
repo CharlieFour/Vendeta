@@ -16,7 +16,7 @@ func _on_join_pressed() -> void:
 	multiplayer.connected_to_server.connect(_on_connected)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	print("Attempting to join...")
-	get_tree().change_scene_to_file("res://scenes/game.tscn")
+	get_tree().change_scene_to_file("res://scenes/.tscn")
 
 func _on_connected():
 	print("Successfully connected to host.")

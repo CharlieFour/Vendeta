@@ -1,9 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpj8lwh8rjsgw"]
+[gd_scene load_steps=2 format=3 uid="uid://cioghtxy63k3y"]
 
-[ext_resource type="Script" uid="uid://m6futcmed77x" path="res://script/killzone.gd" id="1_xlapc"]
+[sub_resource type="GDScript" id="GDScript_csqde"]
+script/source = "extends Area2D
+
+@onready var timer: Timer = $Timer
+
+func _on_body_entered(_body: Node2D) -> void:	 timer.start()
+	
+func _on_timer_timeout() -> void:
+	get_tree().reload_current_scene()
+"
 
 [node name="Killzone" type="Area2D"]
-script = ExtResource("1_xlapc")
+script = SubResource("GDScript_csqde")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5

@@ -1,3 +1,7 @@
+Camera2D
+AnimatedSprite2D
+Node2D
+TileMap
 LineEdit
 OptionButton
 Label
@@ -8,7 +12,3 @@ Control
 MultiplayerSynchronizer
 ProgressBar
 TextureProgressBar
-HBoxContainer
-CanvasLayer
-CollisionShape2D
-Area2D

@@ -1,7 +1,8 @@
-res://scenes/option_menu.tscn
-res://script/menu.gd
-res://script/option_menu.gd
 res://scenes/game.tscn
 res://scenes/fighter.tscn
 res://scenes/menu.tscn
 res://scenes/killzone.tscn
+res://scenes/option_menu.tscn
+res://script/menu.gd
+res://scenes/green_zone_map.tscn
+res://assets/green_zone_map.tscn

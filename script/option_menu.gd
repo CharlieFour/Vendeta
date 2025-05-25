@@ -6,9 +6,9 @@ extends Control
 @onready var back_button = $VBoxContainer/BackButton
 
 # Placeholder for saving options
-var player_name := "New Name"
-var selected_character := ""
-var selected_pet := ""
+var player_name := "Player"
+var selected_character := "Fighter"
+var selected_pet := "Mew"
 
 func _ready():
 	# Fill character and pet dropdowns

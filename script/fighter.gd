@@ -11,50 +11,79 @@ const RUN_SPEED := 600.0
 const JUMP_VELOCITY := -500.0
 const GRAVITY := 1200.0
 
-# State
+# Health
+var health := 100
+var is_dead := false
 var is_attacking := false
 var is_hurt := false
-var is_dead := false
-var health := 100
 var attack_timer := 0.0
 const ATTACK_TIMEOUT := 1.0
 
-# For sync interpolation
+# For network sync interpolation
 var target_position: Vector2
 var target_anim: String = "idle"
 var target_flip_h: bool = false
 
+# UI references (setup once in _ready)
+@onready var health_bar: ProgressBar
+@onready var name_label: Label
+
+var can_control := false
+
+@rpc("any_peer")
+func start_player_control():
+	can_control = true
+
+
 func _ready():
 	print("Spawned Fighter. My ID:", multiplayer.get_unique_id(), " Authority:", get_multiplayer_authority())
+
 	await get_tree().create_timer(0.1).timeout
-	# Only allow non-authority instances to receive replication
+
+	var root = get_tree().root.get_node("Game")
+	var ui = root.get_node("UI")
+
+	if is_multiplayer_authority():
+		health_bar = ui.get_node("Player1HealthBar")
+		name_label = ui.get_node("Player1Label")
+	else:
+		health_bar = ui.get_node("Player2HealthBar")
+		name_label = ui.get_node("Player2Label")
+
+	name_label.text = "You" if is_multiplayer_authority() else "Enemy"
+	health_bar.value = health
+
 	sync.set_process(!is_multiplayer_authority())
 	sync.public_visibility = true
-	# Initialize target position for non-authoritative player
+
 	if not is_multiplayer_authority():
 		target_position = global_position
 
-func _physics_process(delta: float) -> void:
+	if not sprite.animation_finished.is_connected(_on_animated_sprite_2d_animation_finished):
+		sprite.animation_finished.connect(_on_animated_sprite_2d_animation_finished)
+
+func _physics_process(delta):
 	if is_multiplayer_authority():
 		_process_local_player(delta)
-		# Sync position, animation, and flip_h for remote players
 		rpc("sync_state", global_position, sprite.animation, sprite.flip_h)
 	else:
-		# Remote player: interpolate to sync position smoothly
 		global_position = global_position.lerp(target_position, 10 * delta)
 		if sprite.animation != target_anim:
 			sprite.play(target_anim)
 		sprite.flip_h = target_flip_h
 
-func _process_local_player(delta: float) -> void:
+func _process_local_player(delta):
+	if not can_control:
+		return
+		
 	if is_dead:
 		velocity.x = 0
-		sprite.play("dead")
+		if sprite.animation != "dead":
+			sprite.play("dead")
 		return
 
-	if is_hurt:
+	if is_attacking:
 		velocity.x = 0
-		sprite.play("hurt")
 		return
 
 	if not is_on_floor():
@@ -69,11 +98,7 @@ func _process_local_player(delta: float) -> void:
 	var is_running := is_moving and Input.is_action_pressed("run")
 	var current_speed := RUN_SPEED if is_running else SPEED
 
-	if not is_attacking or not is_on_floor():
-		velocity.x = direction * current_speed
-	else:
-		velocity.x = 0
-
+	velocity.x = direction * current_speed if not is_attacking else 0
 	if direction != 0:
 		sprite.flip_h = direction < 0
 
@@ -88,8 +113,7 @@ func _process_local_player(delta: float) -> void:
 		start_attack("attack3")
 	elif not is_attacking:
 		if not is_on_floor():
-			if velocity.y < 0:
-				sprite.play("jump")
+			sprite.play("jump")
 		elif is_moving:
 			sprite.play("sprint" if is_running else "walk")
 		else:
@@ -97,23 +121,49 @@ func _process_local_player(delta: float) -> void:
 
 	move_and_slide()
 
-# Corrected sync_state without "unreliable" annotation
+func _process(delta):
+	if is_attacking:
+		attack_timer += delta
+		if attack_timer > ATTACK_TIMEOUT:
+			is_attacking = false
+			hitbox_area.monitoring = false
+			sprite.play("idle")
+			attack_timer = 0.0
+
 @rpc
-func sync_state(pos: Vector2, anim: String, flip: bool) -> void:
-	if is_multiplayer_authority():
-		return
-	# Set target values for remote players to follow
+func sync_state(pos: Vector2, anim: String, flip: bool):
+	if is_multiplayer_authority(): return
 	target_position = pos
 	target_anim = anim
 	target_flip_h = flip
 
-func start_attack(animation_name: String) -> void:
+func start_attack(anim_name: String):
 	is_attacking = true
 	attack_timer = 0.0
 	if is_on_floor():
 		velocity.x = 0
-	sprite.play(animation_name)
+	sprite.play(anim_name)
 	hitbox_area.monitoring = true
+
+@rpc("any_peer")
+func remote_take_damage(amount: int, from_left: bool):
+	take_damage(amount)
+	apply_knockback(Vector2(200 * (1 if from_left else -1), -100))
+
+@rpc("any_peer", "reliable")
+func broadcast_defeat(defeated_peer_id: int):
+	if defeated_peer_id != multiplayer.get_unique_id():
+		await get_tree().create_timer(1.5).timeout
+		show_win_screen()
+
+func show_win_screen():
+	print("You win!")
+	get_tree().change_scene_to_file("res://scenes/win_screen.tscn")
+
+func show_loss_screen():
+	print("You lose.")
+	get_tree().change_scene_to_file("res://scenes/loss_screen.tscn")
+
 
 func take_damage(amount: int) -> void:
 	if is_dead:
@@ -125,19 +175,47 @@ func take_damage(amount: int) -> void:
 
 	health -= damage
 
+	# Sync to both peers
+	sync_health.rpc(health)
+	sync_health(health) # ← LOCAL call too
+
 	if health <= 0:
 		is_dead = true
 		sprite.play("dead")
+		
+		# Tell ALL players who died (by their peer ID)
+		rpc("broadcast_defeat", multiplayer.get_unique_id())
+
+		# Show loss screen locally
+		await get_tree().create_timer(1.5).timeout
+		show_loss_screen()
 	else:
 		is_hurt = true
 		sprite.play("hurt")
 
-func _on_HitboxArea_body_entered(body: Node2D) -> void:
-	if body.has_method("take_damage"):
-		body.take_damage(10)
-	if body.has_method("apply_knockback"):
-		var direction := 1 if not sprite.flip_h else -1
-		body.apply_knockback(Vector2(200 * direction, -100))
+@rpc("any_peer")
+func sync_health(hp: int) -> void:
+	health = hp
+	update_health_ui()
+
+func update_health_ui() -> void:
+	var ui = get_tree().root.get_node("Game/UI")
+
+	if is_multiplayer_authority():
+		ui.get_node("Player1HealthBar").value = health
+		ui.get_node("Player1Label").text = "You: %d HP" % health
+	else:
+		ui.get_node("Player2HealthBar").value = health
+		ui.get_node("Player2Label").text = "Enemy: %d HP" % health
+
+func apply_knockback(force: Vector2):
+	velocity += force
+
+func _on_hit_box_body_entered(body: Node2D):
+	if body == self or not is_attacking: return
+	if body.has_method("remote_take_damage"):
+		var from_left = global_position.x < body.global_position.x
+		body.rpc_id(body.get_multiplayer_authority(), "remote_take_damage", 10, from_left)
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation in ["attack1", "attack2", "attack3"]:
@@ -146,15 +224,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		sprite.play("idle")
 	elif sprite.animation == "hurt":
 		is_hurt = false
-		sprite.play("idle")
-	elif sprite.animation == "dead":
-		pass
-
-func _process(delta: float) -> void:
-	if is_attacking:
-		attack_timer += delta
-		if attack_timer > ATTACK_TIMEOUT:
-			is_attacking = false
-			hitbox_area.monitoring = false
+		if not is_dead:
 			sprite.play("idle")
-			attack_timer = 0.0
+	elif sprite.animation == "dead":
+		# Stay dead
+		pass

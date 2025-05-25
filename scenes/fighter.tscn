@@ -276,7 +276,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_80g32")
 }],
-"loop": true,
+"loop": false,
 "name": &"dead",
 "speed": 5.0
 }, {
@@ -423,10 +423,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3wvek"]
-size = Vector2(31, 80)
+size = Vector2(26, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o4lsg"]
-size = Vector2(6, 47)
+size = Vector2(39, 47)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_o4lsg"]
 properties/0/path = NodePath(".:collision_layer")
@@ -500,17 +500,18 @@ script = ExtResource("1_1q4ya")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -65)
 sprite_frames = SubResource("SpriteFrames_ql5yn")
-animation = &"idle"
+animation = &"dead"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -40)
+position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_3wvek")
 
 [node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(17, -57)
+position = Vector2(0.5, -56)
 shape = SubResource("RectangleShape2D_o4lsg")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

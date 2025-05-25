@@ -1,22 +1,20 @@
 extends Control
 
 var peer = ENetMultiplayerPeer.new()
+var is_host := false
 
 func _on_host_pressed() -> void:
-	peer.create_server(135)  # Port to host on
+	Global.is_host = true
+	peer.create_server(135)
 	multiplayer.multiplayer_peer = peer
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	print("Hosting on port 135")
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
 
 func _on_join_pressed() -> void:
-	peer.create_client("localhost", 135)  # Replace with host IP for real connection
+	Global.is_host = false
+	peer.create_client("localhost", 135)
 	multiplayer.multiplayer_peer = peer
-	multiplayer.connected_to_server.connect(_on_connected)
-	multiplayer.connection_failed.connect(_on_connection_failed)
-	print("Attempting to join...")
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
+
 
 func _on_connected():
 	print("Successfully connected to host.")

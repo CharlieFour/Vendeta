@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://1euxf7xpnge6"]
+[gd_scene load_steps=38 format=3 uid="uid://1euxf7xpnge6"]
 
 [ext_resource type="Script" uid="uid://73yl2ihnia5u" path="res://script/game_manager.gd" id="1_264po"]
 [ext_resource type="Texture2D" uid="uid://dpq55b1je6yfg" path="res://assets/bg/HD-1080p-Space-wallpaper-with-a-serene-distant-planet-orbiting-a-binary-star-system-wallpaper-with-colorful-skies.jpg" id="1_ssvqc"]
@@ -17,7 +17,6 @@
 [ext_resource type="Texture2D" uid="uid://ct5r1f0cyn5gw" path="res://assets/city_tileset/3 Objects/Trees/1.png" id="14_bt5mj"]
 [ext_resource type="Texture2D" uid="uid://cmgxh50agojcp" path="res://assets/city_tileset/3 Objects/Trees/4.png" id="15_e1j6l"]
 [ext_resource type="Texture2D" uid="uid://blaw5bdxlt6b1" path="res://assets/city_tileset/3 Objects/Trees/5.png" id="16_pl11u"]
-[ext_resource type="PackedScene" uid="uid://dpj8lwh8rjsgw" path="res://scenes/killzone.tscn" id="17_rysoc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_yqjtg")
@@ -567,8 +566,6 @@ sources/13 = SubResource("TileSetAtlasSource_suyxu")
 sources/14 = SubResource("TileSetAtlasSource_sgl2t")
 sources/15 = SubResource("TileSetAtlasSource_qouja")
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ssvqc"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1kice"]
 bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
@@ -616,12 +613,6 @@ layer_1/tile_data = PackedInt32Array(65527, 65536, 0, 65528, 131072, 0, 65529, 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 scale = Vector2(2, 2)
-
-[node name="Killzone" parent="." instance=ExtResource("17_rysoc")]
-position = Vector2(3, 468)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
-shape = SubResource("WorldBoundaryShape2D_ssvqc")
 
 [node name="UI" type="CanvasLayer" parent="."]
 unique_name_in_owner = true

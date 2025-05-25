@@ -1,7 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://1euxf7xpnge6"]
+[gd_scene load_steps=8 format=3 uid="uid://1euxf7xpnge6"]
 
 [ext_resource type="Script" uid="uid://73yl2ihnia5u" path="res://script/game_manager.gd" id="1_264po"]
 [ext_resource type="PackedScene" uid="uid://do4bxwqsxk4r7" path="res://scenes/green_zone_map.tscn" id="2_yqjtg"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yqjtg"]
+properties/0/path = NodePath("../Game Manager:process_mode")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("../Game Manager:process_priority")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("../Game Manager:process_physics_priority")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("../Game Manager:process_thread_group")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("../Game Manager:physics_interpolation_mode")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("../Game Manager:auto_translate_mode")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("../Game Manager:editor_description")
+properties/6/spawn = true
+properties/6/replication_mode = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1kice"]
 bg_color = Color(0, 0, 0, 1)
@@ -36,6 +59,12 @@ corner_radius_bottom_left = 10
 [node name="Game Manager" type="Node" parent="."]
 script = ExtResource("1_264po")
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Game Manager"]
+root_path = NodePath("../../PlayerRegistry")
+replication_config = SubResource("SceneReplicationConfig_yqjtg")
+
+[node name="Characters" type="Node2D" parent="."]
+
 [node name="Green_Zone_Map" parent="." instance=ExtResource("2_yqjtg")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -45,6 +74,12 @@ zoom = Vector2(0.9, 0.9)
 
 [node name="UI" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
+
+[node name="ExitDialog" type="ConfirmationDialog" parent="UI"]
+unique_name_in_owner = true
+ok_button_text = "Yes"
+dialog_text = "Do you want to exit the game?"
+cancel_button_text = "No"
 
 [node name="Player1HealthBar" type="ProgressBar" parent="UI"]
 z_index = 10
@@ -66,19 +101,25 @@ offset_bottom = 77.0
 text = "Player 1"
 
 [node name="Player2HealthBar" type="ProgressBar" parent="UI"]
-offset_left = 843.0
-offset_top = 18.0
-offset_right = 1136.0
-offset_bottom = 45.0
+offset_left = 939.0
+offset_top = 20.0
+offset_right = 1232.0
+offset_bottom = 47.0
 theme_override_styles/background = SubResource("StyleBoxFlat_37s47")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bt5mj")
 value = 100.0
 fill_mode = 1
 
 [node name="Player2Label" type="Label" parent="UI"]
-offset_left = 1003.0
-offset_top = 52.0
-offset_right = 1131.0
-offset_bottom = 75.0
+offset_left = 1099.0
+offset_top = 54.0
+offset_right = 1227.0
+offset_bottom = 77.0
 text = "Player 2"
 horizontal_alignment = 2
+
+[node name="PlayerRegistry" type="Node" parent="."]
+unique_name_in_owner = true
+
+[connection signal="confirmed" from="UI/ExitDialog" to="Game Manager" method="_on_exit_dialog_confirmed"]
+[connection signal="child_entered_tree" from="PlayerRegistry" to="Game Manager" method="_on_registry_update"]

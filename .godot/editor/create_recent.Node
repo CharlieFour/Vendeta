@@ -1,6 +1,9 @@
+MultiplayerSynchronizer
+Node
+Node2D
+ConfirmationDialog
 Camera2D
 AnimatedSprite2D
-Node2D
 TileMap
 LineEdit
 OptionButton
@@ -9,6 +12,3 @@ Button
 VBoxContainer
 TextureRect
 Control
-MultiplayerSynchronizer
-ProgressBar
-TextureProgressBar

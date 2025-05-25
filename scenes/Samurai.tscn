@@ -1,6 +1,7 @@
-[gd_scene load_steps=67 format=3 uid="uid://dcb50wknc5sp5"]
+[gd_scene load_steps=70 format=3 uid="uid://dcb50wknc5sp5"]
 
 [ext_resource type="Texture2D" uid="uid://ftfeuaubqb1i" path="res://assets/players/Samurai/Attack_1.png" id="1_18fwa"]
+[ext_resource type="Script" uid="uid://dn1gwdalvntev" path="res://script/samurai.gd" id="1_dujo8"]
 [ext_resource type="Texture2D" uid="uid://d2tqcuhncbmui" path="res://assets/players/Samurai/Attack_2.png" id="2_dujo8"]
 [ext_resource type="Texture2D" uid="uid://ddg3xdgwiaqqx" path="res://assets/players/Samurai/Attack_3.png" id="3_8frg3"]
 [ext_resource type="Texture2D" uid="uid://bqr1lv0pi82g0" path="res://assets/players/Samurai/Dead.png" id="4_sefhg"]
@@ -250,7 +251,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack1",
-"speed": 10.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -267,7 +268,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack2",
-"speed": 9.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -281,7 +282,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack3",
-"speed": 9.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -445,14 +446,97 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rrf2w"]
 size = Vector2(34, 79)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8frg3"]
+size = Vector2(39, 47)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_sefhg"]
+properties/0/path = NodePath(".:collision_layer")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:up_direction")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:slide_on_ceiling")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:floor_stop_on_slope")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("..:rotation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("..:position")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("..:visible")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath("..:collision_layer")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath("..:collision_mask")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath("..:collision_priority")
+properties/10/spawn = true
+properties/10/replication_mode = 1
+properties/11/path = NodePath("..:motion_mode")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath("..:up_direction")
+properties/12/spawn = true
+properties/12/replication_mode = 1
+properties/13/path = NodePath("..:slide_on_ceiling")
+properties/13/spawn = true
+properties/13/replication_mode = 1
+properties/14/path = NodePath("..:floor_stop_on_slope")
+properties/14/spawn = true
+properties/14/replication_mode = 1
+properties/15/path = NodePath("..:texture_filter")
+properties/15/spawn = true
+properties/15/replication_mode = 1
+properties/16/path = NodePath("../AnimatedSprite2D:animation")
+properties/16/spawn = true
+properties/16/replication_mode = 1
+properties/17/path = NodePath("../AnimatedSprite2D:frame")
+properties/17/spawn = true
+properties/17/replication_mode = 1
+properties/18/path = NodePath("../AnimatedSprite2D:position")
+properties/18/spawn = true
+properties/18/replication_mode = 1
+properties/19/path = NodePath("../CollisionShape2D:position")
+properties/19/spawn = true
+properties/19/replication_mode = 1
+properties/20/path = NodePath("../HitBox:position")
+properties/20/spawn = true
+properties/20/replication_mode = 1
+
 [node name="Samurai" type="CharacterBody2D"]
+z_index = 5
+script = ExtResource("1_dujo8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -65)
 sprite_frames = SubResource("SpriteFrames_geait")
-animation = &"walk"
-frame_progress = 0.302026
+animation = &"sprint"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, -40.5)
 shape = SubResource("RectangleShape2D_rrf2w")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(3.5, -56)
+shape = SubResource("RectangleShape2D_8frg3")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_sefhg")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

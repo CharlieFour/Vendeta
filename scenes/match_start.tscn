@@ -126,10 +126,10 @@ grow_vertical = 0
 color = Color(0, 0, 0, 1)
 
 [node name="Waiting" type="Label" parent="."]
-offset_left = 884.0
-offset_top = 638.0
-offset_right = 1185.0
-offset_bottom = 687.0
+offset_left = 895.0
+offset_top = 639.0
+offset_right = 1196.0
+offset_bottom = 688.0
 text = "Waiting for Other Player....."
 horizontal_alignment = 2
 

@@ -500,7 +500,7 @@ script = ExtResource("1_1q4ya")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -65)
 sprite_frames = SubResource("SpriteFrames_ql5yn")
-animation = &"dead"
+animation = &"hurt"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -515,6 +515,7 @@ position = Vector2(0.5, -56)
 shape = SubResource("RectangleShape2D_o4lsg")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+unique_name_in_owner = true
 root_path = NodePath(".")
 replication_config = SubResource("SceneReplicationConfig_o4lsg")
 

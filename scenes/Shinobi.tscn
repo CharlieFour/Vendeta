@@ -1,5 +1,6 @@
-[gd_scene load_steps=69 format=3 uid="uid://boh0r1d3m13vt"]
+[gd_scene load_steps=72 format=3 uid="uid://boh0r1d3m13vt"]
 
+[ext_resource type="Script" uid="uid://dbprklek5hd3s" path="res://script/shinobi.gd" id="1_gxq2g"]
 [ext_resource type="Texture2D" uid="uid://drfvgtsq3m4sv" path="res://assets/players/Shinobi/Attack_1.png" id="1_i4cjd"]
 [ext_resource type="Texture2D" uid="uid://pxpndilp0t4s" path="res://assets/players/Shinobi/Attack_2.png" id="2_gxq2g"]
 [ext_resource type="Texture2D" uid="uid://by23i03tjya5h" path="res://assets/players/Shinobi/Attack_3.png" id="3_3olox"]
@@ -253,9 +254,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qkln3")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack1",
-"speed": 10.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -267,9 +268,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ren4h")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack2",
-"speed": 9.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -284,9 +285,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xtndd")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack3",
-"speed": 9.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -301,7 +302,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_grgbl")
 }],
-"loop": true,
+"loop": false,
 "name": &"dead",
 "speed": 5.0
 }, {
@@ -312,7 +313,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gkyeh")
 }],
-"loop": true,
+"loop": false,
 "name": &"hurt",
 "speed": 5.0
 }, {
@@ -376,7 +377,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_odkpg")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 10.0
 }, {
@@ -424,7 +425,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"sprint",
-"speed": 11.0
+"speed": 13.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -459,14 +460,97 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_edges"]
 size = Vector2(34, 75)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i4cjd"]
+size = Vector2(39, 47)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gxq2g"]
+properties/0/path = NodePath(".:collision_layer")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:up_direction")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:slide_on_ceiling")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:floor_stop_on_slope")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("..:rotation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("..:position")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("..:visible")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath("..:collision_layer")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath("..:collision_mask")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath("..:collision_priority")
+properties/10/spawn = true
+properties/10/replication_mode = 1
+properties/11/path = NodePath("..:motion_mode")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath("..:up_direction")
+properties/12/spawn = true
+properties/12/replication_mode = 1
+properties/13/path = NodePath("..:slide_on_ceiling")
+properties/13/spawn = true
+properties/13/replication_mode = 1
+properties/14/path = NodePath("..:floor_stop_on_slope")
+properties/14/spawn = true
+properties/14/replication_mode = 1
+properties/15/path = NodePath("..:texture_filter")
+properties/15/spawn = true
+properties/15/replication_mode = 1
+properties/16/path = NodePath("../AnimatedSprite2D:animation")
+properties/16/spawn = true
+properties/16/replication_mode = 1
+properties/17/path = NodePath("../AnimatedSprite2D:frame")
+properties/17/spawn = true
+properties/17/replication_mode = 1
+properties/18/path = NodePath("../AnimatedSprite2D:position")
+properties/18/spawn = true
+properties/18/replication_mode = 1
+properties/19/path = NodePath("../CollisionShape2D:position")
+properties/19/spawn = true
+properties/19/replication_mode = 1
+properties/20/path = NodePath("../HitBox:position")
+properties/20/spawn = true
+properties/20/replication_mode = 1
+
 [node name="Shinobi" type="CharacterBody2D"]
+z_index = 5
+script = ExtResource("1_gxq2g")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(2, -65)
 sprite_frames = SubResource("SpriteFrames_bbtui")
-animation = &"walk"
-frame_progress = 0.655783
+animation = &"attack1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(4, -38.5)
 shape = SubResource("RectangleShape2D_edges")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(3.5, -56)
+shape = SubResource("RectangleShape2D_i4cjd")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_gxq2g")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

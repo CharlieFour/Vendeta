@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 Global="*res://script/global.gd"
 
+[display]
+
+window/size/viewport_width=1258
+window/size/viewport_height=708
+
 [input]
 
 move_right={

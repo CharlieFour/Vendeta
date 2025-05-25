@@ -39,7 +39,7 @@ script = ExtResource("1_264po")
 [node name="Green_Zone_Map" parent="." instance=ExtResource("2_yqjtg")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(17, -212)
+position = Vector2(21, -255)
 scale = Vector2(2, 2)
 zoom = Vector2(0.9, 0.9)
 

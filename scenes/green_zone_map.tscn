@@ -448,4 +448,4 @@ texture = ExtResource("24_yvxn5")
 position = Vector2(386, -36)
 sprite_frames = SubResource("SpriteFrames_hwxss")
 autoplay = "default"
-frame_progress = 0.299054
+frame_progress = 0.0168132

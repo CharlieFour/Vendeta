@@ -6,3 +6,7 @@ res://scenes/option_menu.tscn
 res://script/menu.gd
 res://scenes/green_zone_map.tscn
 res://assets/green_zone_map.tscn
+res://script/fighter.gd
+res://script/game_manager.gd
+res://script/option_menu.gd
+res://scenes/match_start.tscn

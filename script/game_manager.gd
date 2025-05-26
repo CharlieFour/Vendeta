@@ -5,13 +5,33 @@ extends Node
 @onready var match_start_ui = preload("res://scenes/match_start.tscn").instantiate()
 @onready var exit_dialog := %ExitDialog
 
+# Database manager reference
+@onready var db_manager: Node
+
 var players_ready := 0
 var spawned_players := {}
 var spawned_pets := {}
 var player_characters := {}
 var player_names := {}
 var player_pets := {}
+
+# Match tracking
+var match_start_time := 0
+var current_match_data := {}
+
 func _ready():
+	# Initialize database manager
+	db_manager = preload("res://script/database_manager.gd").new()
+	add_child(db_manager)
+	
+	# Connect database signals
+	db_manager.match_started.connect(_on_match_started_in_db)
+	db_manager.match_completed.connect(_on_match_completed_in_db)
+	db_manager.error_occurred.connect(_on_db_error)
+	
+	# Initialize players in database
+	db_manager.initialize_player(Global.player_name)
+	
 	# Check if ui_layer exists before using it
 	if ui_layer == null:
 		print("❌ UI layer not found! Make sure you have a node with unique name 'UI'")
@@ -57,6 +77,10 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	if spawned_pets.has(peer_id):
 		spawned_pets[peer_id].queue_free()
 		spawned_pets.erase(peer_id)
+	
+	# Mark match as abandoned if in progress
+	if match_start_time > 0:
+		db_manager.complete_match("", get_match_duration())
 
 @rpc("any_peer")
 func register_character_choice(peer_id: int, character_name: String, player_name: String, pet_name: String) -> void:
@@ -108,7 +132,42 @@ func spawn_player(peer_id: int, character_name: String, player_name: String, pet
 	
 	players_ready += 1
 	if Global.is_host and players_ready == 2:
+		# Start match in database before starting game sequence
+		start_database_match()
 		start_match_sequence.rpc()
+
+func start_database_match():
+	"""Initialize match in database"""
+	var host_name = ""
+	var client_name = ""
+	var host_character = ""
+	var client_character = ""
+	var host_pet = ""
+	var client_pet = ""
+	
+	# Get match data from spawned players
+	for peer_id in player_names:
+		if peer_id == 1:  # Host
+			host_name = player_names[peer_id]
+			host_character = player_characters[peer_id]
+			host_pet = player_pets[peer_id]
+		else:  # Client
+			client_name = player_names[peer_id]
+			client_character = player_characters[peer_id]  
+			client_pet = player_pets[peer_id]
+	
+	# Store match data for later
+	current_match_data = {
+		"host_name": host_name,
+		"client_name": client_name,
+		"host_character": host_character,
+		"client_character": client_character,
+		"host_pet": host_pet,
+		"client_pet": client_pet
+	}
+	
+	# Start match in database
+	db_manager.start_match(host_name, client_name, host_character, client_character, host_pet, client_pet)
 
 @rpc("authority", "call_local")
 func start_match_sequence():
@@ -116,6 +175,9 @@ func start_match_sequence():
 	var anim = match_start_ui.get_node("AnimationPlayer")
 	anim.play("match_start")
 	await anim.animation_finished
+	
+	# Record match start time
+	match_start_time = Time.get_ticks_msec()
 	
 	# Enable control for all players - call on each player directly
 	for peer_id in spawned_players:
@@ -185,6 +247,47 @@ func apply_pet_perks(peer_id: int, pet_name: String):
 		_:
 			print("⚠️ Unknown pet:", pet_name, "- no perks applied")
 
+# ========================================
+# MATCH COMPLETION HANDLING
+# ========================================
+
+func on_player_defeated(defeated_player_name: String):
+	"""Called when a player is defeated - determines winner and saves to database"""
+	if match_start_time == 0:
+		return  # Match hasn't started yet
+	
+	var winner_name = ""
+	
+	# Determine winner (the one who didn't lose)
+	for peer_id in player_names:
+		if player_names[peer_id] != defeated_player_name:
+			winner_name = player_names[peer_id]
+			break
+	
+	if winner_name != "":
+		var match_duration = get_match_duration()
+		db_manager.complete_match(winner_name, match_duration)
+		print("🏆 Match completed - Winner: ", winner_name, " Duration: ", match_duration, "s")
+
+func get_match_duration() -> int:
+	"""Get match duration in seconds"""
+	if match_start_time == 0:
+		return 0
+	return int((Time.get_ticks_msec() - match_start_time) / 1000.0)
+
+# ========================================
+# DATABASE EVENT HANDLERS  
+# ========================================
+
+func _on_match_started_in_db(match_id: int):
+	print("📊 Match started in database with ID: ", match_id)
+
+func _on_match_completed_in_db(winner_name: String):
+	print("📊 Match saved to database - Winner: ", winner_name)
+
+func _on_db_error(message: String):
+	print("❌ Database error: ", message)
+
 func start_pet_glow_animation(pet: Node):
 	# Create a timer for periodic glow animation
 	var glow_timer = Timer.new()
@@ -215,4 +318,8 @@ func show_exit_dialog():
 	exit_dialog.popup_centered()
 
 func _on_exit_dialog_confirmed():
+	# Save match as abandoned if in progress
+	if match_start_time > 0:
+		db_manager.complete_match("", get_match_duration())
+	
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")

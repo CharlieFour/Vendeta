@@ -1,5 +1,27 @@
 extends CharacterBody2D
 
+
+@rpc("any_peer", "reliable")
+func broadcast_defeat(defeated_peer_id: int):
+	# Notify match manager about the defeat
+	var match_manager = get_tree().root.get_node("Game")
+	if match_manager.has_method("on_player_defeated"):
+		var defeated_name = ""
+		# Find the defeated player's name
+		for peer_id in match_manager.player_names:
+			if peer_id == defeated_peer_id:
+				defeated_name = match_manager.player_names[peer_id]
+				break
+		
+		if defeated_name != "":
+			match_manager.on_player_defeated(defeated_name)
+	
+	# Show win screen for other players
+	if defeated_peer_id != multiplayer.get_unique_id():
+		await get_tree().create_timer(1.5).timeout
+		show_win_screen()
+
+
 # Nodes
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hitbox_area: Area2D = $HitBox
@@ -163,11 +185,6 @@ func remote_take_damage(amount: int, from_left: bool):
 	take_damage(amount)
 	apply_knockback(Vector2(200 * (1 if from_left else -1), -100))
 
-@rpc("any_peer", "reliable")
-func broadcast_defeat(defeated_peer_id: int):
-	if defeated_peer_id != multiplayer.get_unique_id():
-		await get_tree().create_timer(1.5).timeout
-		show_win_screen()
 
 func show_win_screen():
 	print("You win!")

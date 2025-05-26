@@ -7,15 +7,15 @@
 [node name="LossScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1258.0
+offset_bottom = 708.0
 script = ExtResource("1_q6k04")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0, 0, 0, 1)
 layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1258.0
+offset_bottom = 708.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = SubResource("CanvasTexture_s508f")
@@ -23,14 +23,17 @@ expand_mode = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -258.5
-offset_top = 128.0
-offset_right = 258.5
-offset_bottom = 245.0
+anchor_bottom = 0.5
+offset_left = -257.0
+offset_top = -187.0
+offset_right = 260.0
+offset_bottom = -70.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 72
 text = "YOU  LOSE"
 horizontal_alignment = 1
@@ -43,10 +46,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -98.5
-offset_top = -17.5
-offset_right = 98.5
-offset_bottom = 17.5
+offset_left = -97.5
+offset_top = 25.5
+offset_right = 99.5
+offset_bottom = 60.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Retun to Main Menu"

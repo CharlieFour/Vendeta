@@ -33,6 +33,9 @@ const RUN_SPEED := 600.0
 const JUMP_VELOCITY := -500.0
 const GRAVITY := 1200.0
 
+
+var game_manager: Node
+
 # Health
 var health := 100
 var is_dead := false
@@ -96,6 +99,10 @@ func _ready():
 
 	if not sprite.animation_finished.is_connected(_on_animated_sprite_2d_animation_finished):
 		sprite.animation_finished.connect(_on_animated_sprite_2d_animation_finished)
+		
+	game_manager = get_tree().get_first_node_in_group("game_manager")
+	if not game_manager:
+		game_manager = get_node("/root/GameManager")
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
@@ -200,6 +207,7 @@ func take_damage(amount: int) -> void:
 
 	var damage := amount
 	
+	
 	# Apply shield reduction
 	if Input.is_action_pressed("shield"):
 		damage *= 0.3
@@ -210,7 +218,8 @@ func take_damage(amount: int) -> void:
 		print("🛡️ Pet damage reduction applied: ", pet_damage_reduction * 100, "% - Final damage: ", damage)
 
 	health -= damage
-
+	update_health_ui() 
+	
 	# Sync to both peers
 	sync_health.rpc(health)
 	sync_health(health) # ← LOCAL call too
@@ -225,9 +234,36 @@ func take_damage(amount: int) -> void:
 		# Show loss screen locally
 		await get_tree().create_timer(1.5).timeout
 		show_loss_screen()
+		die()
 	else:
 		is_hurt = true
 		sprite.play("hurt")
+
+func die():
+	# ... your existing death animation/logic ...
+	
+	# IMPORTANT: Notify game manager about defeat
+	if game_manager and game_manager.has_method("on_player_defeated"):
+		var my_player_name = player_name # or however you store the player name
+		print("💀 Player defeated: ", my_player_name)
+		game_manager.on_player_defeated(my_player_name)
+		print("🏆 Notified game manager of defeat: ", my_player_name)
+	else:
+		print("❌ Could not find game manager to report defeat")
+	
+	# Disable player controls to prevent further actions
+	set_physics_process(false)
+	set_process_input(false)
+
+func declare_victory():
+	# If you have explicit victory conditions
+	# Find the opponent's name and call on_player_defeated with their name
+	
+	var opponent_name = "" # Get opponent's name somehow
+	
+	if game_manager and game_manager.has_method("on_player_defeated"):
+		game_manager.on_player_defeated(opponent_name)
+		print("🏆 Victory declared - opponent defeated: ", opponent_name)
 
 @rpc("any_peer")
 func sync_health(hp: int) -> void:

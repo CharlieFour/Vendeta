@@ -7,15 +7,15 @@
 [node name="WinScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1258.0
+offset_bottom = 708.0
 script = ExtResource("1_wv5lq")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0, 0, 0, 1)
 layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1258.0
+offset_bottom = 708.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = SubResource("CanvasTexture_s508f")

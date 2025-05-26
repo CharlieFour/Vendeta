@@ -14,10 +14,14 @@ var spawned_pets := {}
 var player_characters := {}
 var player_names := {}
 var player_pets := {}
+var game_manager: Node
 
 # Match tracking
 var match_start_time := 0
 var current_match_data := {}
+
+# Add connection tracking
+var connection_established := false
 
 func _ready():
 	# Initialize database manager
@@ -28,9 +32,14 @@ func _ready():
 	db_manager.match_started.connect(_on_match_started_in_db)
 	db_manager.match_completed.connect(_on_match_completed_in_db)
 	db_manager.error_occurred.connect(_on_db_error)
+	db_manager.player_created.connect(_on_player_created_in_db)
 	
-	# Initialize players in database
-	db_manager.initialize_player(Global.player_name)
+	# Wait for database to load before initializing player
+	if not db_manager.characters_cache.is_empty():
+		db_manager.initialize_player(Global.player_name)
+	else:
+		await db_manager.data_loaded
+		db_manager.initialize_player(Global.player_name)
 	
 	# Check if ui_layer exists before using it
 	if ui_layer == null:
@@ -43,26 +52,56 @@ func _ready():
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
+	print("🎮 Game Manager Ready - Is Host: ", Global.is_host, " Player: ", Global.player_name)
+	
 	if Global.is_host:
+		print("🏠 HOST: Initializing host player...")
 		var my_id = multiplayer.get_unique_id()
 		player_characters[my_id] = Global.selected_character
 		player_names[my_id] = Global.player_name
 		player_pets[my_id] = Global.selected_pet
-		# Host calls spawn_player with call_local to spawn on all clients including self
+		# Host spawns itself
 		spawn_player.rpc(my_id, Global.selected_character, Global.player_name, Global.selected_pet)
 		match_start_ui.get_node("Waiting").show()
+		print("🏠 HOST: Waiting for client to connect...")
 	else:
-		match_start_ui.get_node("Waiting").hide()
+		print("👤 CLIENT: Waiting for connection to establish...")
+		match_start_ui.get_node("Waiting").show()
+		# Give a small delay to ensure connection is stable
+		await get_tree().create_timer(0.5).timeout
+		_register_with_host()
+	
+	add_to_group("game_manager")
+
+func _register_with_host():
+	"""Client registers its character info with the host"""
+	if Global.is_host:
+		return
+	
+	var my_id = multiplayer.get_unique_id()
+	print("👤 CLIENT: Registering with host - ID: ", my_id)
+	print("👤 CLIENT: Character: ", Global.selected_character, " Name: ", Global.player_name, " Pet: ", Global.selected_pet)
+	
+	# Send registration to host
+	register_character_choice.rpc_id(1, my_id, Global.selected_character, Global.player_name, Global.selected_pet)
+
+func _on_player_created_in_db(player_id: int):
+	print("📊 Player created/found in database with ID: ", player_id)
 
 func _on_peer_connected(peer_id: int) -> void:
-	print("🔗 Peer connected:", peer_id)
+	print("🔗 Peer connected:", peer_id, " (I am host: ", Global.is_host, ")")
+	
 	if Global.is_host:
-		# When a client connects, send them info about all existing players (including host)
+		print("🏠 HOST: Client connected with ID: ", peer_id)
+		# Send existing players to the new client
 		for existing_peer_id in player_characters:
+			print("🏠 HOST: Sending existing player ", existing_peer_id, " to new client ", peer_id)
 			spawn_player.rpc_id(peer_id, existing_peer_id, player_characters[existing_peer_id], player_names[existing_peer_id], player_pets[existing_peer_id])
 	else:
-		# Send name + character + pet to host only
-		register_character_choice.rpc_id(1, multiplayer.get_unique_id(), Global.selected_character, Global.player_name, Global.selected_pet)
+		print("👤 CLIENT: Connected to host, registering character...")
+		# Small delay to ensure connection is stable
+		await get_tree().create_timer(0.2).timeout
+		_register_with_host()
 
 func _on_peer_disconnected(peer_id: int) -> void:
 	print("❌ Peer disconnected:", peer_id)
@@ -82,21 +121,36 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	if match_start_time > 0:
 		db_manager.complete_match("", get_match_duration())
 
-@rpc("any_peer")
+@rpc("any_peer", "call_local")
 func register_character_choice(peer_id: int, character_name: String, player_name: String, pet_name: String) -> void:
+	print("🎯 HOST: Received character registration from peer ", peer_id)
+	print("🎯 HOST: Character: ", character_name, " Name: ", player_name, " Pet: ", pet_name)
+	
 	if not Global.is_host:
+		print("❌ Only host can process character registration")
+		return
+	
+	# Check if this player is already registered
+	if player_characters.has(peer_id):
+		print("⚠️ Player ", peer_id, " already registered, skipping...")
 		return
 	
 	player_characters[peer_id] = character_name
 	player_names[peer_id] = player_name
 	player_pets[peer_id] = pet_name
 	
-	# Spawn this player on all clients
+	print("🎯 HOST: Registered new player - Total players: ", player_characters.size())
+	print("🎯 HOST: Current players: ", player_characters.keys())
+	
+	# Spawn this player on all clients (including host)
 	spawn_player.rpc(peer_id, character_name, player_name, pet_name)
 
 @rpc("authority", "call_local")
 func spawn_player(peer_id: int, character_name: String, player_name: String, pet_name: String):
+	print("👥 Spawning player - Peer: ", peer_id, " Character: ", character_name, " Name: ", player_name)
+	
 	if spawned_players.has(peer_id):
+		print("⚠️ Player already spawned for peer ", peer_id)
 		return
 	
 	var scene_path = "res://scenes/%s.tscn" % character_name.to_lower()
@@ -130,14 +184,33 @@ func spawn_player(peer_id: int, character_name: String, player_name: String, pet
 	# Spawn the pet
 	spawn_pet(peer_id, pet_name, is_host_player)
 	
+	# Update ready count
 	players_ready += 1
-	if Global.is_host and players_ready == 2:
-		# Start match in database before starting game sequence
-		start_database_match()
-		start_match_sequence.rpc()
+	print("🎯 Players ready: ", players_ready, "/2")
+	
+	# Check if we can start the match (only on host)
+	if Global.is_host:
+		print("🏠 HOST: Checking if match can start...")
+		print("🏠 HOST: Players ready: ", players_ready, " Total registered: ", player_characters.size())
+		
+		# Start match when we have exactly 2 players spawned
+		if players_ready == 2 and player_characters.size() == 2:
+			print("🎮 HOST: All conditions met - Starting match!")
+			# Small delay to ensure everything is set up
+			await get_tree().create_timer(1.0).timeout
+			start_database_match()
+		else:
+			print("🏠 HOST: Not ready yet - need 2 spawned players and 2 registered players")
 
 func start_database_match():
 	"""Initialize match in database"""
+	print("📊 Preparing database match...")
+	
+	# Wait for data to be loaded
+	if db_manager.characters_cache.is_empty() or db_manager.pets_cache.is_empty():
+		print("⏳ Waiting for database data to load...")
+		await db_manager.data_loaded
+	
 	var host_name = ""
 	var client_name = ""
 	var host_character = ""
@@ -156,6 +229,15 @@ func start_database_match():
 			client_character = player_characters[peer_id]  
 			client_pet = player_pets[peer_id]
 	
+	print("🎮 Match Data - Host: ", host_name, "(", host_character, "+", host_pet, ") vs Client: ", client_name, "(", client_character, "+", client_pet, ")")
+	
+	# Validate all data is present
+	if host_name == "" or client_name == "" or host_character == "" or client_character == "" or host_pet == "" or client_pet == "":
+		print("❌ Missing match data, cannot start database match")
+		print("❌ Debug - Host data: ", host_name, ", ", host_character, ", ", host_pet)
+		print("❌ Debug - Client data: ", client_name, ", ", client_character, ", ", client_pet)
+		return
+	
 	# Store match data for later
 	current_match_data = {
 		"host_name": host_name,
@@ -163,14 +245,16 @@ func start_database_match():
 		"host_character": host_character,
 		"client_character": client_character,
 		"host_pet": host_pet,
-		"client_pet": client_pet
+		"client_Pet": client_pet
 	}
 	
 	# Start match in database
+	print("📊 Starting database match...")
 	db_manager.start_match(host_name, client_name, host_character, client_character, host_pet, client_pet)
 
 @rpc("authority", "call_local")
 func start_match_sequence():
+	print("🎬 Starting match sequence animation...")
 	match_start_ui.get_node("Waiting").hide()
 	var anim = match_start_ui.get_node("AnimationPlayer")
 	anim.play("match_start")
@@ -178,12 +262,15 @@ func start_match_sequence():
 	
 	# Record match start time
 	match_start_time = Time.get_ticks_msec()
+	print("⏰ Match timer started at: ", match_start_time)
 	
 	# Enable control for all players - call on each player directly
 	for peer_id in spawned_players:
 		spawned_players[peer_id].start_player_control()
+		print("🎮 Enabled controls for player ", peer_id)
 	
 	match_start_ui.queue_free()
+	print("🎬 Match sequence complete - FIGHT!")
 
 func spawn_pet(peer_id: int, pet_name: String, is_host_player: bool):
 	if spawned_pets.has(peer_id):
@@ -281,6 +368,8 @@ func get_match_duration() -> int:
 
 func _on_match_started_in_db(match_id: int):
 	print("📊 Match started in database with ID: ", match_id)
+	# Now start the visual match sequence
+	start_match_sequence.rpc()
 
 func _on_match_completed_in_db(winner_name: String):
 	print("📊 Match saved to database - Winner: ", winner_name)

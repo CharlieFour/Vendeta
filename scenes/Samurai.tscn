@@ -249,7 +249,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ewpuf")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack1",
 "speed": 15.0
 }, {
@@ -266,7 +266,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dl7ok")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack2",
 "speed": 15.0
 }, {
@@ -280,7 +280,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g6en0")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack3",
 "speed": 15.0
 }, {
@@ -294,7 +294,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s7mhw")
 }],
-"loop": true,
+"loop": false,
 "name": &"dead",
 "speed": 5.0
 }, {
@@ -369,7 +369,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tcbpu")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 11.0
 }, {
@@ -521,7 +521,7 @@ script = ExtResource("1_dujo8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -65)
 sprite_frames = SubResource("SpriteFrames_geait")
-animation = &"sprint"
+animation = &"hurt"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, -40.5)

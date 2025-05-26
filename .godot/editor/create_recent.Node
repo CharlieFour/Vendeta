@@ -1,9 +1,10 @@
+AnimatedSprite2D
+CharacterBody2D
 MultiplayerSynchronizer
 Node
 Node2D
 ConfirmationDialog
 Camera2D
-AnimatedSprite2D
 TileMap
 LineEdit
 OptionButton
@@ -11,4 +12,3 @@ Label
 Button
 VBoxContainer
 TextureRect
-Control

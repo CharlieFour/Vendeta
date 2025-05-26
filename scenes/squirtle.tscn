@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=3 uid="uid://cbwep35rq3o8g"]
+
+[ext_resource type="Texture2D" uid="uid://y3olw7gx5ha2" path="res://assets/pets/squirtle/Hurt.png" id="1_dlyaq"]
+[ext_resource type="Texture2D" uid="uid://cfern2lt87jq6" path="res://assets/pets/squirtle/Idle.png" id="2_vjxqj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jk7r"]
+atlas = ExtResource("1_dlyaq")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n3ee6"]
+atlas = ExtResource("1_dlyaq")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bll7p"]
+atlas = ExtResource("1_dlyaq")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kee6e"]
+atlas = ExtResource("1_dlyaq")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7bk3"]
+atlas = ExtResource("2_vjxqj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sqq5a"]
+atlas = ExtResource("2_vjxqj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q53em"]
+atlas = ExtResource("2_vjxqj")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nypoc"]
+atlas = ExtResource("2_vjxqj")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tia78"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8jk7r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3ee6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bll7p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kee6e")
+}],
+"loop": false,
+"name": &"glow",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v7bk3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sqq5a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q53em")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nypoc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 9.0
+}]
+
+[node name="squirtle" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 4
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_tia78")
+animation = &"glow"
+autoplay = "idle"
+frame = 3
+frame_progress = 1.0

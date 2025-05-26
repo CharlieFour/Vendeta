@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=3 uid="uid://b1gbh37druxrp"]
+
+[ext_resource type="Texture2D" uid="uid://coosqki8k2nlw" path="res://assets/pets/yeti/Hurt.png" id="1_jgaxg"]
+[ext_resource type="Texture2D" uid="uid://c0vfj75bkab76" path="res://assets/pets/yeti/Idle.png" id="2_rhct1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfjqt"]
+atlas = ExtResource("1_jgaxg")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgrc7"]
+atlas = ExtResource("1_jgaxg")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s35n2"]
+atlas = ExtResource("1_jgaxg")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ptepk"]
+atlas = ExtResource("1_jgaxg")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xta4"]
+atlas = ExtResource("2_rhct1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3sg1"]
+atlas = ExtResource("2_rhct1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sxobb"]
+atlas = ExtResource("2_rhct1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bavh"]
+atlas = ExtResource("2_rhct1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i7jeq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfjqt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgrc7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s35n2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ptepk")
+}],
+"loop": false,
+"name": &"glow",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xta4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3sg1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sxobb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7bavh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 9.0
+}]
+
+[node name="yeti" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 4
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_i7jeq")
+animation = &"glow"
+autoplay = "idle"
+frame = 3
+frame_progress = 1.0

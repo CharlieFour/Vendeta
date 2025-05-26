@@ -9,3 +9,4 @@ res://script/game_manager.gd
 res://script/samurai.gd
 res://script/shinobi.gd
 res://script/option_menu.gd
+res://scenes/mew.tscn

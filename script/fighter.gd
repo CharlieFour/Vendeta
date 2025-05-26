@@ -19,6 +19,11 @@ var is_hurt := false
 var attack_timer := 0.0
 const ATTACK_TIMEOUT := 1.0
 
+# Pet Perks (added for pet system)
+var pet_bonus_hp := 0
+var pet_attack_multiplier := 1.0
+var pet_damage_reduction := 0.0
+
 # For network sync interpolation
 var target_position: Vector2
 var target_anim: String = "idle"
@@ -177,8 +182,15 @@ func take_damage(amount: int) -> void:
 		return
 
 	var damage := amount
+	
+	# Apply shield reduction
 	if Input.is_action_pressed("shield"):
 		damage *= 0.3
+	
+	# Apply pet damage reduction (Yeti perk)
+	if pet_damage_reduction > 0:
+		damage *= (1.0 - pet_damage_reduction)
+		print("🛡️ Pet damage reduction applied: ", pet_damage_reduction * 100, "% - Final damage: ", damage)
 
 	health -= damage
 
@@ -207,20 +219,23 @@ func sync_health(hp: int) -> void:
 
 func update_health_ui() -> void:
 	var ui = get_tree().root.get_node("Game/UI")
+	var max_health = 100 + pet_bonus_hp  # Show total possible health including pet bonus
 
 	# Update UI based on host/client status, not authority
 	if is_host_player:
+		ui.get_node("Player1HealthBar").max_value = max_health
 		ui.get_node("Player1HealthBar").value = health
 		if is_multiplayer_authority():
-			ui.get_node("Player1Label").text = "You: %d HP" % health
+			ui.get_node("Player1Label").text = "You: %d/%d HP" % [health, max_health]
 		else:
-			ui.get_node("Player1Label").text = "Enemy: %d HP" % health
+			ui.get_node("Player1Label").text = "Enemy: %d/%d HP" % [health, max_health]
 	else:
+		ui.get_node("Player2HealthBar").max_value = max_health
 		ui.get_node("Player2HealthBar").value = health
 		if is_multiplayer_authority():
-			ui.get_node("Player2Label").text = "You: %d HP" % health
+			ui.get_node("Player2Label").text = "You: %d/%d HP" % [health, max_health]
 		else:
-			ui.get_node("Player2Label").text = "Enemy: %d HP" % health
+			ui.get_node("Player2Label").text = "Enemy: %d/%d HP" % [health, max_health]
 
 func apply_knockback(force: Vector2):
 	velocity += force
@@ -229,7 +244,15 @@ func _on_hit_box_body_entered(body: Node2D):
 	if body == self or not is_attacking: return
 	if body.has_method("remote_take_damage"):
 		var from_left = global_position.x < body.global_position.x
-		body.rpc_id(body.get_multiplayer_authority(), "remote_take_damage", 10, from_left)
+		
+		# Calculate damage with pet attack multiplier (Squirtle perk)
+		var base_damage = 10
+		var final_damage = int(base_damage * pet_attack_multiplier)
+		
+		if pet_attack_multiplier > 1.0:
+			print("⚔️ Pet attack boost applied: ", (pet_attack_multiplier - 1.0) * 100, "% - Final damage: ", final_damage)
+		
+		body.rpc_id(body.get_multiplayer_authority(), "remote_take_damage", final_damage, from_left)
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation in ["attack1", "attack2", "attack3"]:

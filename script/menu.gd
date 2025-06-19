@@ -13,9 +13,7 @@ func _on_host_pressed() -> void:
 
 func _on_join_pressed() -> void:
 	Global.is_host = false
-	peer.create_client("localhost", 135)  # Replace with host IP for real connection
-	# 192.168.193.50 (Jibran)
-	# 10.1.107.165 (Rafay)
+	peer.create_client(Global.host_ip, 135)  # Replace with host IP for real connection
 	multiplayer.multiplayer_peer = peer
 	multiplayer.connected_to_server.connect(_on_connected)
 	multiplayer.connection_failed.connect(_on_connection_failed)

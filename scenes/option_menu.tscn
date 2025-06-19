@@ -75,7 +75,15 @@ horizontal_alignment = 1
 [node name="PetDropdown" type="OptionButton" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="HostIP2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Host IP"
+horizontal_alignment = 1
+
+[node name="HostIP" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]

@@ -1,3 +1,6 @@
+Label
+LineEdit
+Line2D
 Node
 AnimatedSprite2D
 CharacterBody2D
@@ -6,9 +9,6 @@ Node2D
 ConfirmationDialog
 Camera2D
 TileMap
-LineEdit
 OptionButton
-Label
 Button
 VBoxContainer
-TextureRect

@@ -1,11 +1,12 @@
-res://scenes/match_start.tscn
+res://scenes/option_menu.tscn
+res://script/option_menu.gd
+res://script/global.gd
+res://script/menu.gd
 res://scenes/game.tscn
 res://scenes/fighter.tscn
 res://scenes/menu.tscn
+res://scenes/match_start.tscn
 res://scenes/Shinobi.tscn
 res://scenes/Samurai.tscn
 res://scenes/loss_screen.tscn
 res://scenes/win_screen.tscn
-res://script/game_manager.gd
-res://script/fighter.gd
-res://script/database_manager.gd

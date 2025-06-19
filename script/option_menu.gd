@@ -4,6 +4,7 @@ extends Control
 @onready var character_dropdown = $VBoxContainer/CharacterDropdown
 @onready var pet_dropdown = $VBoxContainer/PetDropdown
 @onready var back_button = $VBoxContainer/BackButton
+@onready var host_ip = $VBoxContainer/HostIP
 
 # Placeholder for saving options
 var player_name := Global.player_name
@@ -24,6 +25,9 @@ func _ready():
 	
 	# Set default or loaded values
 	name_edit.text = Global.player_name
+	
+	# Set default ip
+	host_ip.text = Global.host_ip
 	
 	# Set the correct character selection
 	var char_items = ["Fighter", "Samurai", "Shinobi"]
@@ -49,7 +53,8 @@ func _on_back_pressed():
 	Global.player_name = name_edit.text
 	Global.selected_character = character_dropdown.get_item_text(character_dropdown.get_selected_id())
 	Global.selected_pet = pet_dropdown.get_item_text(pet_dropdown.get_selected_id())
+	Global.host_ip = host_ip.text
 	
-	print("Saved settings - Name:", Global.player_name, " Character:", Global.selected_character, " Pet:", Global.selected_pet)
+	print("Saved settings - Name:", Global.player_name, " Character:", Global.selected_character, " Pet:", Global.selected_pet, " Host IP:", Global.host_ip)
 	
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")

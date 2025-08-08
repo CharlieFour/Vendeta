@@ -1,2 +1,3 @@
-# Vendeta
- 
+# Vendeta – 2D Multiplayer Fighting Game 🎮
+
+Vendeta is a fast-paced **2D peer-to-peer multiplayer fighting game** built in **Godot Engine** with real-time combat, dynamic map selection, and character customization. Players can choose from unique fighters — *Fighter, Shinobi, Samurai* — each with distinct abilities, and equip pets that grant special perks. The game uses **Supabase** for secure online data storage, tracking player stats, match history, and leaderboard potential. Featuring LAN-based multiplayer using **ENet**, Vendeta delivers smooth gameplay, responsive controls, and competitive action. Whether hosting or joining, every match is a new challenge with random maps and strategic pet choices.
